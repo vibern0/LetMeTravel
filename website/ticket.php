@@ -3,11 +3,15 @@
 class Ticket
 {
 
-    function registerTicket($name, $date, $source, $destination)
+    function registerTicket($name, $from, $to, $date)
     {
 
     }
     function removeTicket($ticketId)
+    {
+
+    }
+    function ticketsAvailable($from, $to, $date)
     {
 
     }
