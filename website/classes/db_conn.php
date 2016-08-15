@@ -11,6 +11,13 @@ class Connection
 {
     var $connection;
 
+    function __construct() { }
+
+    function __destruct()
+    {
+        mysql_close($this->connection);
+    }
+
     function connect()
     {
         if (!$this->connection = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD))
@@ -32,7 +39,7 @@ class Connection
         mysql_query($sql, $this->connection);
 
         $sql = 'CREATE TABLE IF NOT EXISTS`'.CONNECTIONS_TABLE.
-            '` ( `id` INT NOT  NULL AUTO_INCREMENT , `id_from` INT NOT NULL , `id_to` INT NOT NULL , PRIMARY KEY (`id`))';
+            '` ( `id` INT NOT  NULL AUTO_INCREMENT , `id_from` INT NOT NULL , `id_to` INT NOT NULL , `price` FLOAT NOT NULL , PRIMARY KEY (`id`))';
         mysql_query($sql, $this->connection);
     }
     function getConnection()
