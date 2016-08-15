@@ -6,24 +6,37 @@
         <script>
             function loadDestStations()
             {
-                if (document.getElementById("toStations").value.localeCompare("null"))
+                var t = document.getElementById("toStations");
+                var f = document.getElementById("fromStation");
+                var xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onreadystatechange = function()
                 {
-                    document.getElementById("toStations").innerHTML = "<option value=\"null\">Select</option>";
-                }
-                else
-                {
-                    var xmlhttp = new XMLHttpRequest();
-                    var e = document.getElementById("fromStation");
-                    xmlhttp.onreadystatechange = function()
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
                     {
-                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-                        {
-                            document.getElementById("toStations").innerHTML = xmlhttp.responseText;
-                        }
-                    };
-                    xmlhttp.open("GET", "scripts/loadDestStations.php?f=" + e.options[e.selectedIndex].value, true);
-                    xmlhttp.send();
-                }
+                        t.innerHTML = xmlhttp.responseText;
+                        document.getElementById("travelPrice").innerHTML = '0€';
+                    }
+                };
+                xmlhttp.open("GET", "scripts/loadDestStations.php?f=" + f.options[f.selectedIndex].value, true);
+                xmlhttp.send();
+            }
+            function getTravelPrice()
+            {
+                var t = document.getElementById("toStations");
+                var f = document.getElementById("fromStation");
+                var xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onreadystatechange = function()
+                {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                    {
+                        document.getElementById("travelPrice").innerHTML = xmlhttp.responseText + '€';
+                    }
+                };
+                xmlhttp.open("GET", "scripts/getTravelPrice.php?f=" +
+                    f.options[f.selectedIndex].value + "&t=" + t.options[t.selectedIndex].value, true);
+                xmlhttp.send();
             }
         </script>
     </head>
@@ -39,8 +52,9 @@
                 echo $stations->getStationsPrintable($array_stations);
             ?>
         </select>
-        <select id="toStations">
+        <select id="toStations" onchange="getTravelPrice()">
             <option value="null">Select</option>
         </select>
+        <span id="travelPrice">0€</price>
     </body>
 <html>

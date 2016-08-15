@@ -35,7 +35,7 @@ class Station
     public function getAvailableDestination($from)
     {
         $sql        = 'SELECT s.`id`, `name` FROM `'.STATIONS_TABLE.'` s, `'.CONNECTIONS_TABLE.
-                        '` WHERE s.`id`=`id_to` AND `id_from`=1';
+                        '` WHERE s.`id`=`id_to` AND `id_from`='.$from;
         //SELECT `name` FROM `stations` s, `connections` WHERE s.`id`=`id_to` AND `id_from`=1
 
         $result     = mysql_query($sql, $this->db_conn->getConnection());
@@ -57,9 +57,24 @@ class Station
 
         return $output;
     }
-    public function calculateStationsDistance($from, $to)
+    public function getTravelPrice($from, $to)
     {
+        $sql        = 'SELECT `price` FROM `'.CONNECTIONS_TABLE.
+                        '` WHERE `id_from`='.$from.' AND `id_to`='.$to;
+        $result     = mysql_query($sql, $this->db_conn->getConnection());
+        $output     = array();
 
+        if (!$result)
+        {
+            echo "Database error during query!\n";
+            echo 'MySQL error: ' . mysql_error();
+            exit;
+        }
+
+        $row = mysql_fetch_assoc($result);
+        mysql_free_result($result);
+
+        return $row['price'];
     }
     public function getStationsPrintable($array_stations)
     {
