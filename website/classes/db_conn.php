@@ -1,5 +1,6 @@
 <?php
-require 'station.php';
+define("STATIONS_TABLE",    "stations");
+define("CONNECTIONS_TABLE", "connections");
 
 define("MYSQL_HOST",        "localhost");
 define("MYSQL_DATABASE",    "letmetravel");
@@ -26,8 +27,12 @@ class Connection
 
         //create table if it doesnt exist
 
-        $sql = 'CREATE TABLE `'.STATIONS_TABLE.
-            '` (`id` int(11) NOT NULL, `name` varchar(32) NOT NULL, PRIMARY KEY (`id`))';
+        $sql = 'CREATE TABLE IF NOT EXISTS `'.STATIONS_TABLE.
+            '` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(32) NOT NULL , PRIMARY KEY (`id`))';
+        mysql_query($sql, $this->connection);
+
+        $sql = 'CREATE TABLE IF NOT EXISTS`'.CONNECTIONS_TABLE.
+            '` ( `id` INT NOT  NULL AUTO_INCREMENT , `id_from` INT NOT NULL , `id_to` INT NOT NULL , PRIMARY KEY (`id`))';
         mysql_query($sql, $this->connection);
     }
     function getConnection()

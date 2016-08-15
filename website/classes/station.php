@@ -1,9 +1,6 @@
 <?php
 require 'db_conn.php';
 
-define("STATIONS_TABLE",    "stations");
-define("CONNECTIONS_TABLE", "connections");
-
 class Station
 {
     public $db_conn;
@@ -37,7 +34,28 @@ class Station
     }
     public function getAvailableDestination($from)
     {
+        $sql        = 'SELECT s.`id`, `name` FROM `'.STATIONS_TABLE.'` s, `'.CONNECTIONS_TABLE.
+                        '` WHERE s.`id`=`id_to` AND `id_from`=1';
+        //SELECT `name` FROM `stations` s, `connections` WHERE s.`id`=`id_to` AND `id_from`=1
 
+        $result     = mysql_query($sql, $this->db_conn->getConnection());
+        $output     = array();
+
+        if (!$result)
+        {
+            echo "Database error during query!\n";
+            echo 'MySQL error: ' . mysql_error();
+            exit;
+        }
+
+        while ($row = mysql_fetch_assoc($result))
+        {
+            $output[$row['id']] = $row['name'];
+        }
+
+        mysql_free_result($result);
+
+        return $output;
     }
     public function calculateStationsDistance($from, $to)
     {
