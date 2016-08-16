@@ -3,14 +3,14 @@ require 'db_conn.php';
 
 class Station
 {
-    public $db_conn;
+    var $db_conn;
 
-    public function Station()
+    function __construct()
     {
         $this->db_conn = new Connection;
         $this->db_conn->connect();
     }
-    public function getAllStations()
+    function getAllStations()
     {
         $sql        = 'SELECT * FROM '.STATIONS_TABLE;
         $result     = mysql_query($sql, $this->db_conn->getConnection());
@@ -32,7 +32,7 @@ class Station
 
         return $output;
     }
-    public function getAvailableDestination($from)
+    function getAvailableDestination($from)
     {
         $sql        = 'SELECT s.`id`, `name` FROM `'.STATIONS_TABLE.'` s, `'.CONNECTIONS_TABLE.
                         '` WHERE s.`id`=`id_to` AND `id_from`='.$from;
@@ -57,7 +57,7 @@ class Station
 
         return $output;
     }
-    public function getTravelPrice($from, $to)
+    function getTravelPrice($from, $to)
     {
         $sql        = 'SELECT `price` FROM `'.CONNECTIONS_TABLE.
                         '` WHERE `id_from`='.$from.' AND `id_to`='.$to;
@@ -76,7 +76,7 @@ class Station
 
         return $row['price'];
     }
-    public function getStationsPrintable($array_stations)
+    function getStationsPrintable($array_stations)
     {
         $output = '';
         foreach ($array_stations as $key=>$value)

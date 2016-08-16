@@ -32,11 +32,16 @@
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
                     {
                         document.getElementById("travelPrice").innerHTML = xmlhttp.responseText + '€';
+                        loadTravelSchedule();
                     }
                 };
                 xmlhttp.open("GET", "scripts/getTravelPrice.php?f=" +
                     f.options[f.selectedIndex].value + "&t=" + t.options[t.selectedIndex].value, true);
                 xmlhttp.send();
+            }
+            function loadTravelSchedule()
+            {
+
             }
         </script>
     </head>
@@ -56,5 +61,14 @@
             <option value="null">Select</option>
         </select>
         <span id="travelPrice">0€</price>
+        Schedule
+        <table id="schedule_table">
+            <tr>
+                <th>Leave</th>
+                <th>Arrive</th>
+                <th>Travel time</th>
+                <th>Travel stops</th>
+            </tr>
+        </table>
     </body>
 <html>
