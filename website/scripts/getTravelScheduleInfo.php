@@ -1,13 +1,12 @@
 <?php
+require '../classes/schedule.php';
 
-$r = $_REQUEST["r"]; //required info
+$f = $_REQUEST["f"];
+$t = $_REQUEST["t"];
+$w = $_REQUEST["w"];
 
-switch($r)
-{
-    case 1:
-        break;
-    case 2:
-        break;
-}
+$schedule = new Schedule;
+$array = $schedule->getSchedule($f, $t, $w);
+echo $schedule->getPritableInTable($array);
 
 ?>
