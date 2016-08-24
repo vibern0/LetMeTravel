@@ -10,6 +10,9 @@ define("MYSQL_DATABASE",    "letmetravel");
 define("MYSQL_USER",        "root");
 define("MYSQL_PASSWORD",    "root");
 
+define("FILE_VERSION_URL",  ".cache/version");
+define("FOLDER_VERSION_URL",".cache");
+
 class Connection
 {
     var $connection;
@@ -17,10 +20,11 @@ class Connection
 
     function __construct()
     {
-        $version = 1;
-        //
-        //check version
-        //update if necessary!
+        $this->version = 1;
+        if(!is_dir(FOLDER_VERSION_URL))
+        {
+            mkdir(FOLDER_VERSION_URL);
+        }
     }
     function __destruct()
     {
@@ -40,6 +44,32 @@ class Connection
             exit;
         }
 
+        $version_in_file = 0;
+        //check version
+        if(file_exists(FILE_VERSION_URL))
+        {
+            $handle = fopen(FILE_VERSION_URL, "r");
+            $version_in_file = intval(fread($handle, filesize(FILE_VERSION_URL)));
+            fclose($handle);
+        }
+
+        //update if necessary!
+        if($this->version > $version_in_file)
+        {
+            $this->upgrade_database($this->version);
+        }
+    }
+    function disconnect()
+    {
+        mysql_close($this->connection);
+    }
+    function getConnection()
+    {
+        return $this->connection;
+    }
+
+    function create_tables()
+    {
         //create table if it doesnt exist
 
         $sql = 'CREATE TABLE IF NOT EXISTS `'.STATIONS_TABLE.
@@ -60,14 +90,66 @@ class Connection
         $sql = 'CREATE TABLE IF NOT EXISTS `' . STOPS_TABLE .
             '` ( `id_connection` INT NOT  NULL , `id_station` INT NOT  NULL)`';
         mysql_query($sql, $this->connection);
+        //
     }
-    function getConnection()
+    function destroy_tables()
     {
-        return $this->connection;
+        //
+        $sql = "DROP TABLE old_" . STATIONS_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "DROP TABLE old_" . CONNECTIONS_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "DROP TABLE old_" . SCHEDULE_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "DROP TABLE old_" . STOPS_TABLE;
+        mysql_query($sql, $this->connection);
     }
-    function disconnect()
+    function upgrade_database($new_version)
     {
-        mysql_close($this->connection);
+        $sql = "ALTER TABLE ".STATIONS_TABLE." RENAME old_".STATIONS_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "ALTER TABLE ".CONNECTIONS_TABLE." RENAME old_".CONNECTIONS_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "ALTER TABLE ".SCHEDULE_TABLE." RENAME old_".SCHEDULE_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "ALTER TABLE ".STOPS_TABLE." RENAME old_".STOPS_TABLE;
+        mysql_query($sql, $this->connection);
+
+        //
+
+        $this->create_tables();
+
+        //
+
+        $sql = "INSERT ".STATIONS_TABLE." SELECT * FROM old_".STATIONS_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "INSERT ".CONNECTIONS_TABLE." SELECT * FROM old_".CONNECTIONS_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "INSERT ".SCHEDULE_TABLE." SELECT * FROM old_".SCHEDULE_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "INSERT ".STOPS_TABLE." SELECT * FROM old_".STOPS_TABLE;
+        mysql_query($sql, $this->connection);
+
+        //
+
+        $this->destroy_tables();
+
+        //
+
+        $handle = fopen(FILE_VERSION_URL, 'w+');
+        ftruncate($handle, 0);
+        rewind($handle);
+        fwrite($handle, $new_version);
+        fclose($handle);
     }
 };
 
