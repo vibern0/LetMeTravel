@@ -61,6 +61,23 @@
                     "&w=" + w.options[w.selectedIndex].value, true);
                 xmlhttp.send();
             }
+            function buyTicket()
+            {
+                var select_travel_time = document.forms[0];
+                var i;
+                var checked = false;
+                for (i = 0; i < select_travel_time.length; i++)
+                {
+                    if (select_travel_time[i].checked)
+                    {
+                        checked = true;
+                        break;
+                    }
+                }
+                
+                if(checked)
+                    alert("Travel ID " + select_travel_time[i].value);
+            }
         </script>
     </head>
 
@@ -91,12 +108,16 @@
             <option value="7">Sunday</option>
         </select>
         Schedule
-        <table id="schedule_table">
-            <tr>
-                <th>Leave time</th>
-                <th>Travel time</th>
-                <th>Arrive time</th>
-            </tr>
-        </table>
+        <form action="">
+            <table id="schedule_table">
+                <tr>
+                    <th>Leave time</th>
+                    <th>Travel time</th>
+                    <th>Arrive time</th>
+                    <th>Select<!-- <input type="radio" name="name" value="value">Value<br> --></th>
+                </tr>
+            </table>
+        </form>
+        <button type="button" onclick="buyTicket()">Buy ticket</button>
     </body>
 <html>

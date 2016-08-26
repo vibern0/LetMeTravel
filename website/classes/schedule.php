@@ -99,6 +99,7 @@ class Schedule
                 '<td>'.date("H:i", strtotime($schedule[1])).'</td>'.
                 '<td>'.date("H:i", strtotime($schedule[2])).'</td>'.
                 '<td>'.date("H:i", $this->getArriveTime($schedule[0])).'</td>'.
+                '<td><input type="radio" name="travel_id" value="'.$schedule[0].'"></td>'.
             '</tr>';
         }
 
