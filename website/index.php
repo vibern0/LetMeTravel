@@ -18,8 +18,10 @@
                         document.getElementById("travelPrice").innerHTML = '0€';
                         document.getElementById("week_day").selectedIndex = 0;
                         //clear schedule table
+                        document.getElementById("no_travel_available").style.visibility = "hidden";
                         document.getElementById("schedule_table").innerHTML =
-                            "<tr><th>Leave time</th><th>Travel time</th><th>Arrive time</th></tr>";
+                            "<tr><th>Leave time</th><th>Travel time</th><th>Arrive time</th><th>Select</th></tr>";
+                        document.getElementById("bt_buy_ticket").style.visibility = "hidden";
                     }
                 };
                 xmlhttp.open("GET", "scripts/loadDestStations.php?f=" + f.options[f.selectedIndex].value, true);
@@ -36,6 +38,12 @@
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
                     {
                         document.getElementById("travelPrice").innerHTML = xmlhttp.responseText + '€';
+                        document.getElementById("week_day").selectedIndex = 0;
+                        //clear schedule table
+                        document.getElementById("no_travel_available").style.visibility = "hidden";
+                        document.getElementById("schedule_table").innerHTML =
+                            "<tr><th>Leave time</th><th>Travel time</th><th>Arrive time</th><th>Select</th></tr>";
+                        document.getElementById("bt_buy_ticket").style.visibility = "hidden";
                     }
                 };
                 xmlhttp.open("GET", "scripts/getTravelPrice.php?f=" +
@@ -53,7 +61,19 @@
                 {
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
                     {
-                        document.getElementById("schedule_table").innerHTML += xmlhttp.responseText;
+                        document.getElementById("schedule_table").innerHTML =
+                            "<tr><th>Leave time</th><th>Travel time</th><th>Arrive time</th><th>Select</th></tr>" +
+                            xmlhttp.responseText;
+                        if(xmlhttp.responseText.length > 0)
+                        {
+                            document.getElementById("no_travel_available").style.visibility = "hidden";
+                            document.getElementById("bt_buy_ticket").style.visibility = "visible";
+                        }
+                        else
+                        {
+                            document.getElementById("no_travel_available").style.visibility = "visible";
+                            document.getElementById("bt_buy_ticket").style.visibility = "hidden";
+                        }
                     }
                 };
                 xmlhttp.open("GET", "scripts/getTravelScheduleInfo.php?f=" +
@@ -74,7 +94,7 @@
                         break;
                     }
                 }
-                
+
                 if(checked)
                     alert("Travel ID " + select_travel_time[i].value);
             }
@@ -118,6 +138,7 @@
                 </tr>
             </table>
         </form>
-        <button type="button" onclick="buyTicket()">Buy ticket</button>
+        <button id="bt_buy_ticket" style="visibility:hidden" type="button" onclick="buyTicket()">Buy ticket</button>
+        <p id="no_travel_available"  style="visibility:hidden">No Travel Available!</p>
     </body>
 <html>
