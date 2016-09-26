@@ -26,10 +26,6 @@ class Connection
             mkdir(FOLDER_VERSION_URL);
         }
     }
-    function __destruct()
-    {
-        mysql_close($this->connection);
-    }
     function connect()
     {
         if (!$this->connection = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD))
@@ -77,18 +73,22 @@ class Connection
         mysql_query($sql, $this->connection);
 
         $sql = 'CREATE TABLE IF NOT EXISTS `'.CONNECTIONS_TABLE.
-            '` ( `id` INT NOT  NULL AUTO_INCREMENT , `id_from` INT NOT NULL '.
+            '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_from` INT NOT NULL '.
             ', `id_to` INT NOT NULL , `price` FLOAT NOT NULL , PRIMARY KEY (`id`))';
         mysql_query($sql, $this->connection);
 
         $sql = 'CREATE TABLE IF NOT EXISTS `'.SCHEDULE_TABLE.
-            '` ( `id` INT NOT  NULL AUTO_INCREMENT , `id_from` INT NOT NULL '.
+            '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_from` INT NOT NULL '.
             ', `id_to` INT NOT NULL , `week_day` INT NOT NULL , `leave_time` TIME NOT NULL '.
-            ', `travel_time` TIME NOT NULL , PRIMARY KEY (`id`))';
+            ', `travel_time` TIME NOT NULL, `total_seats` INT NOT NULL , PRIMARY KEY (`id`))';
         mysql_query($sql, $this->connection);
 
         $sql = 'CREATE TABLE IF NOT EXISTS `' . STOPS_TABLE .
-            '` ( `id_connection` INT NOT  NULL , `id_station` INT NOT  NULL)`';
+            '` ( `id_connection` INT NOT NULL , `id_station` INT NOT NULL)`';
+        mysql_query($sql, $this->connection);
+
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . SEATS_TABLE .
+            '` ( `id_schedule` INT NOT NULL , `id_from` INT NOT NULL, `id_to` INT NOT NULL, `seat` INT NOT NULL)`';
         mysql_query($sql, $this->connection);
         //
     }
@@ -106,6 +106,9 @@ class Connection
 
         $sql = "DROP TABLE old_" . STOPS_TABLE;
         mysql_query($sql, $this->connection);
+
+        $sql = "DROP TABLE old_" . SEATS_TABLE;
+        mysql_query($sql, $this->connection);
     }
     function upgrade_database($new_version)
     {
@@ -119,6 +122,9 @@ class Connection
         mysql_query($sql, $this->connection);
 
         $sql = "ALTER TABLE ".STOPS_TABLE." RENAME old_".STOPS_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "ALTER TABLE ".SEATS_TABLE." RENAME old_".SEATS_TABLE;
         mysql_query($sql, $this->connection);
 
         //
@@ -137,6 +143,9 @@ class Connection
         mysql_query($sql, $this->connection);
 
         $sql = "INSERT ".STOPS_TABLE." SELECT * FROM old_".STOPS_TABLE;
+        mysql_query($sql, $this->connection);
+
+        $sql = "INSERT ".SEATS_TABLE." SELECT * FROM old_".SEATS_TABLE;
         mysql_query($sql, $this->connection);
 
         //

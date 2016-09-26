@@ -10,6 +10,10 @@ class Schedule
         $this->db_conn = new Connection;
         $this->db_conn->connect();
     }
+    function __destruct()
+    {
+        $this->db_conn->disconnect();
+    }
     function getSchedule($from, $to, $week_day)
     {
         $sql        = 'SELECT id, leave_time, travel_time FROM ' . SCHEDULE_TABLE .
@@ -33,7 +37,7 @@ class Schedule
 
         return $output;
     }
-    function getFreeSeats($schedule_code)
+    function getFreeSeats($schedule_code, $id_from, $id_to)
     {
         //
     }

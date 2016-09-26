@@ -10,6 +10,10 @@ class Station
         $this->db_conn = new Connection;
         $this->db_conn->connect();
     }
+    function __destruct()
+    {
+        $this->db_conn->disconnect();
+    }
     function getAllStations()
     {
         $sql        = 'SELECT * FROM '.STATIONS_TABLE;
