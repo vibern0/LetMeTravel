@@ -1,7 +1,7 @@
 <?php
 require '../classes/db_conn.php';
 
-class Prices
+class Admin
 {
     var $db_conn;
 
@@ -14,9 +14,9 @@ class Prices
     {
         $this->db_conn->disconnect();
     }
-    function registerNewStation()
+    function registerNewStation($name)
     {
-        //
+        return 0;
     }
     function registerNewPrice()
     {
