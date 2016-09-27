@@ -140,5 +140,9 @@
         </form>
         <button id="bt_buy_ticket" style="visibility:hidden" type="button" onclick="buyTicket()">Buy ticket</button>
         <p id="no_travel_available"  style="visibility:hidden">No Travel Available!</p>
+        <!-- select seat -->
+        <!-- payment method -->
+        <!-- pay -->
+        <!-- confirm and recieve ticket -->
     </body>
 <html>

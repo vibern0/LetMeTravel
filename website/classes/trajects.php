@@ -1,7 +1,7 @@
 <?php
 require 'db_conn.php';
 
-class Stops
+class Trajects
 {
     var $db_conn;
 
@@ -14,14 +14,8 @@ class Stops
     {
         $this->db_conn->disconnect();
     }
-    function getHour($stop_id)
-    {
-        //
-    }
-    function getMinute($stop_id)
+    function getAvailableTrajects($id_station_from, $id_station_to)
     {
         //
     }
 }
-
-?>
