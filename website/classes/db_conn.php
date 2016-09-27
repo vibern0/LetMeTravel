@@ -1,9 +1,9 @@
 <?php
-define("STATIONS_TABLE",    "stations");
-define("CONNECTIONS_TABLE", "connections");
-define("SCHEDULE_TABLE",    "schedule");
-define("STOPS_TABLE",       "stops");
-define("SEATS_TABLE",       "seats");
+define("TRAJECTS_TABLE", "trajects");
+define("STOPS_TABLE", "stops");
+define("STATIONS_TABLE", "stations");
+define("TRANSPORTS_TABLE", "transports");
+define("TICKETS_TABLE", "tickets");
 
 define("MYSQL_HOST",        "localhost");
 define("MYSQL_DATABASE",    "letmetravel");
@@ -28,16 +28,38 @@ class Connection
     }
     function connect()
     {
-        if (!$this->connection = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD))
+        if (!$this->connection = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD))
         {
             echo 'Error connecting to MySQL database.';
             exit;
         }
 
-        if (!mysql_select_db(MYSQL_DATABASE, $this->connection))
+        if (!$this->connection->select_db(MYSQL_DATABASE))
         {
-            echo 'Error selecting MySQL database.';
-            exit;
+            if($this->connection->errno == 1049)
+            {
+                if(!$this->connection->query('CREATE DATABASE ' . MYSQL_DATABASE))
+                {
+                    echo 'Error creating MySQL database.';
+                    echo $this->connection->errno;
+                    exit;
+                }
+                else
+                {
+                    if (!$this->connection->select_db(MYSQL_DATABASE))
+                    {
+                        echo 'Error selecting MySQL database.';
+                        echo $this->connection->errno;
+                        exit;
+                    }
+                }
+            }
+            else
+            {
+                echo 'Error selecting MySQL database.';
+                echo $this->connection->errno;
+                exit;
+            }
         }
 
         $version_in_file = 0;
@@ -57,7 +79,7 @@ class Connection
     }
     function disconnect()
     {
-        mysql_close($this->connection);
+        $this->connection->close();
     }
     function getConnection()
     {
@@ -68,64 +90,64 @@ class Connection
     {
         //create table if it doesnt exist
 
+        $sql = 'CREATE TABLE IF NOT EXISTS `'.TRAJECTS_TABLE.
+            '` ( `id` INT NOT NULL , `id_stop` INT NOT NULL , `order` INT NOT NULL)';
+        $this->connection->query($sql);
+
+        $sql = 'CREATE TABLE IF NOT EXISTS `'.STOPS_TABLE.
+            '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_station` INT NOT NULL '.
+            ', `hour` INT NOT NULL , `minute` INT NOT NULL , PRIMARY KEY (`id`))';
+        $this->connection->query($sql);
+
         $sql = 'CREATE TABLE IF NOT EXISTS `'.STATIONS_TABLE.
             '` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(32) NOT NULL , PRIMARY KEY (`id`))';
-        mysql_query($sql, $this->connection);
+        $this->connection->query($sql);
 
-        $sql = 'CREATE TABLE IF NOT EXISTS `'.CONNECTIONS_TABLE.
-            '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_from` INT NOT NULL '.
-            ', `id_to` INT NOT NULL , `price` FLOAT NOT NULL , PRIMARY KEY (`id`))';
-        mysql_query($sql, $this->connection);
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . TRANSPORTS_TABLE .
+            '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_traject` INT NOT NULL, ' .
+            '`number` INT NOT NULL, `seats` INT NOT NULL, PRIMARY KEY (`id`))`';
+        $this->connection->query($sql);
 
-        $sql = 'CREATE TABLE IF NOT EXISTS `'.SCHEDULE_TABLE.
-            '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_from` INT NOT NULL '.
-            ', `id_to` INT NOT NULL , `week_day` INT NOT NULL , `leave_time` TIME NOT NULL '.
-            ', `travel_time` TIME NOT NULL, `total_seats` INT NOT NULL , PRIMARY KEY (`id`))';
-        mysql_query($sql, $this->connection);
-
-        $sql = 'CREATE TABLE IF NOT EXISTS `' . STOPS_TABLE .
-            '` ( `id_connection` INT NOT NULL , `id_station` INT NOT NULL)`';
-        mysql_query($sql, $this->connection);
-
-        $sql = 'CREATE TABLE IF NOT EXISTS `' . SEATS_TABLE .
-            '` ( `id_schedule` INT NOT NULL , `id_from` INT NOT NULL, `id_to` INT NOT NULL, `seat` INT NOT NULL)`';
-        mysql_query($sql, $this->connection);
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . TICKETS_TABLE .
+            '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_transport` INT NOT NULL,'.
+            '`id_stop_from` INT NOT NULL, `id_stop_to` INT NOT NULL , `seat` INT NOT NULL, PRIMARY KEY (`id`))`';
+        $this->connection->query($sql);
         //
     }
     function destroy_tables()
     {
         //
-        $sql = "DROP TABLE old_" . STATIONS_TABLE;
-        mysql_query($sql, $this->connection);
-
-        $sql = "DROP TABLE old_" . CONNECTIONS_TABLE;
-        mysql_query($sql, $this->connection);
-
-        $sql = "DROP TABLE old_" . SCHEDULE_TABLE;
-        mysql_query($sql, $this->connection);
+        $sql = "DROP TABLE old_" . TRAJECTS_TABLE;
+        $this->connection->query($sql);
 
         $sql = "DROP TABLE old_" . STOPS_TABLE;
-        mysql_query($sql, $this->connection);
+        $this->connection->query($sql);
 
-        $sql = "DROP TABLE old_" . SEATS_TABLE;
-        mysql_query($sql, $this->connection);
+        $sql = "DROP TABLE old_" . STATIONS_TABLE;
+        $this->connection->query($sql);
+
+        $sql = "DROP TABLE old_" . TRANSPORTS_TABLE;
+        $this->connection->query($sql);
+
+        $sql = "DROP TABLE old_" . TICKETS_TABLE;
+        $this->connection->query($sql);
     }
     function upgrade_database($new_version)
     {
-        $sql = "ALTER TABLE ".STATIONS_TABLE." RENAME old_".STATIONS_TABLE;
-        mysql_query($sql, $this->connection);
-
-        $sql = "ALTER TABLE ".CONNECTIONS_TABLE." RENAME old_".CONNECTIONS_TABLE;
-        mysql_query($sql, $this->connection);
-
-        $sql = "ALTER TABLE ".SCHEDULE_TABLE." RENAME old_".SCHEDULE_TABLE;
-        mysql_query($sql, $this->connection);
+        $sql = "ALTER TABLE ".TRAJECTS_TABLE." RENAME old_".TRAJECTS_TABLE;
+        $this->connection->query($sql);
 
         $sql = "ALTER TABLE ".STOPS_TABLE." RENAME old_".STOPS_TABLE;
-        mysql_query($sql, $this->connection);
+        $this->connection->query($sql);
 
-        $sql = "ALTER TABLE ".SEATS_TABLE." RENAME old_".SEATS_TABLE;
-        mysql_query($sql, $this->connection);
+        $sql = "ALTER TABLE ".STATIONS_TABLE." RENAME old_".STATIONS_TABLE;
+        $this->connection->query($sql);
+
+        $sql = "ALTER TABLE ".TRANSPORTS_TABLE." RENAME old_".TRANSPORTS_TABLE;
+        $this->connection->query($sql);
+
+        $sql = "ALTER TABLE ".TICKETS_TABLE." RENAME old_".TICKETS_TABLE;
+        $this->connection->query($sql);
 
         //
 
@@ -133,20 +155,20 @@ class Connection
 
         //
 
+        $sql = "INSERT ".TRAJECTS_TABLE." SELECT * FROM old_".TRAJECTS_TABLE;
+        $this->connection->query($sql);
+
+        $sql = "INSERT ".STOPS_TABLE." SELECT * FROM old_". STOPS_TABLE;
+        $this->connection->query($sql);
+
         $sql = "INSERT ".STATIONS_TABLE." SELECT * FROM old_".STATIONS_TABLE;
-        mysql_query($sql, $this->connection);
+        $this->connection->query($sql);
 
-        $sql = "INSERT ".CONNECTIONS_TABLE." SELECT * FROM old_".CONNECTIONS_TABLE;
-        mysql_query($sql, $this->connection);
+        $sql = "INSERT ".TRANSPORTS_TABLE." SELECT * FROM old_".TRANSPORTS_TABLE;
+        $this->connection->query($sql);
 
-        $sql = "INSERT ".SCHEDULE_TABLE." SELECT * FROM old_".SCHEDULE_TABLE;
-        mysql_query($sql, $this->connection);
-
-        $sql = "INSERT ".STOPS_TABLE." SELECT * FROM old_".STOPS_TABLE;
-        mysql_query($sql, $this->connection);
-
-        $sql = "INSERT ".SEATS_TABLE." SELECT * FROM old_".SEATS_TABLE;
-        mysql_query($sql, $this->connection);
+        $sql = "INSERT ".TICKETS_TABLE." SELECT * FROM old_".TICKETS_TABLE;
+        $this->connection->query($sql);
 
         //
 
