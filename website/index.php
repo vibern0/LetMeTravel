@@ -1,4 +1,4 @@
-<?php require 'classes/station.php'; ?>
+<?php require 'classes/stations.php'; ?>
 
 <html>
     <head>
@@ -103,11 +103,12 @@
 
     <body>
         <?php
-            $stations = new Station;
+
         ?>
         <select id="fromStation" onchange="loadDestStations()">
             <option value="null">Select</option>
             <?php
+                $stations = new Stations;
                 $array_stations = $stations->getAllStations();
                 echo $stations->getStationsPrintable($array_stations);
             ?>
