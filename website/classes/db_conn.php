@@ -77,6 +77,7 @@ class Connection
         {
             $this->upgrade_database($this->version);
         }
+        return $this->connection;
     }
     function disconnect()
     {
@@ -106,17 +107,17 @@ class Connection
 
         $sql = 'CREATE TABLE IF NOT EXISTS `' . TRANSPORTS_TABLE .
             '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_traject` INT NOT NULL, ' .
-            '`number` INT NOT NULL, `seats` INT NOT NULL, PRIMARY KEY (`id`))`';
+            '`number` INT NOT NULL, `seats` INT NOT NULL, PRIMARY KEY (`id`))';
         $this->connection->query($sql);
 
         $sql = 'CREATE TABLE IF NOT EXISTS `' . TICKETS_TABLE .
             '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_transport` INT NOT NULL,'.
-            '`id_stop_from` INT NOT NULL, `id_stop_to` INT NOT NULL , `seat` INT NOT NULL, PRIMARY KEY (`id`))`';
+            '`id_stop_from` INT NOT NULL, `id_stop_to` INT NOT NULL , `seat` INT NOT NULL, PRIMARY KEY (`id`))';
         $this->connection->query($sql);
 
         $sql = 'CREATE TABLE IF NOT EXISTS `' . PRICES_TABLE .
             '` ( `id_station_from` INT NOT NULL, `id_station_to` INT NOT NULL,'.
-            '`price` FLOAT NOT NULL)`';
+            '`price` FLOAT NOT NULL)';
         $this->connection->query($sql);
         //
     }
