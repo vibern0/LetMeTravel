@@ -38,7 +38,7 @@ class Stations
     }
     function getAvailableDestination($id_from_station)
     {
-        //
+		//
     }
     function getStationsPrintable($array_stations)
     {
