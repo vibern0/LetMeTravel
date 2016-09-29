@@ -28,9 +28,9 @@ class Stations
             exit;
         }
 
-        while ($row = $result->fetch_assoc())
+        while ($row = $result->fetch_row())
         {
-            $output[$row['id']] = $row['name'];
+            $output[$row[0]] = $row[1];
         }
 
         $result->free();
@@ -38,7 +38,27 @@ class Stations
     }
     function getAvailableDestination($id_from_station)
     {
-		//
+        $output = array();
+        $sql = "SELECT DISTINCT st.id, st.name FROM stops s, stations st, trajects t,"
+            ."(SELECT t.order AS o, t.id AS t_id FROM stops s, trajects t, stations st "
+                ."WHERE s.id_station = " . $id_from_station . " AND t.id_stop = s.id) o "
+            ."WHERE t.order > o.o AND st.id = s.id_station AND s.id = t.id_stop AND t.id = o.t_id";
+
+        $result = $this->db_conn->query($sql);
+        if (!$result)
+        {
+            echo "Database error during query!\n";
+            echo 'MySQL error: ' . mysql_error();
+            exit;
+        }
+
+        while ($row = $result->fetch_row())
+        {
+            $output[$row[0]] = $row[1];
+        }
+
+        $result->free();
+        return $output;
     }
     function getStationsPrintable($array_stations)
     {

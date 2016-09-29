@@ -4,15 +4,16 @@ require 'db_conn.php';
 class Ticket
 {
     var $db_conn;
+    var $connection;
 
     function __construct()
     {
-        $this->db_conn = new Connection;
-        $this->db_conn->connect();
+        $this->connection = new Connection;
+        $this->db_conn = $this->connection->connect();
     }
     function __destruct()
     {
-        $this->db_conn->disconnect();
+        $this->connection->disconnect();
     }
     function addTicket($name, $id_transport, $id_stop_from, $id_stop_to, $seat)
     {

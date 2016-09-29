@@ -1,9 +1,9 @@
 <?php
-require '../classes/station.php';
+require '../classes/stations.php';
 
 $f = $_REQUEST["f"];
 
-$stations = new Station;
+$stations = new Stations;
 $array_stations = $stations->getAvailableDestination($f);
 echo "<option value=\"null\">Select</option>".$stations->getStationsPrintable($array_stations);
 
