@@ -4,6 +4,7 @@ define("STOPS_TABLE", "stops");
 define("STATIONS_TABLE", "stations");
 define("TRANSPORTS_TABLE", "transports");
 define("TICKETS_TABLE", "tickets");
+define("WEEKDAY_TABLE", "weekday");
 
 define("MYSQL_HOST",        "localhost");
 define("MYSQL_DATABASE",    "letmetravel");
@@ -20,7 +21,7 @@ class Connection
 
     function __construct()
     {
-        $this->version = 1;
+        $this->version = 2;
         if(!is_dir(FOLDER_VERSION_URL))
         {
             mkdir(FOLDER_VERSION_URL);
@@ -110,8 +111,12 @@ class Connection
         $this->connection->query($sql);
 
         $sql = 'CREATE TABLE IF NOT EXISTS `' . TICKETS_TABLE .
-            '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_transport` INT NOT NULL,'.
+            '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_transport` INT NOT NULL,' .
             '`id_stop_from` INT NOT NULL, `id_stop_to` INT NOT NULL , `seat` INT NOT NULL, PRIMARY KEY (`id`))';
+        $this->connection->query($sql);
+
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . WEEKDAY_TABLE .
+            '` ( `id_traject` INT NOT NULL , `week_day` INT NOT NULL)';
         $this->connection->query($sql);
         //
     }
@@ -132,6 +137,9 @@ class Connection
 
         $sql = "DROP TABLE old_" . TICKETS_TABLE;
         $this->connection->query($sql);
+
+        $sql = "DROP TABLE old_" . WEEKDAY_TABLE;
+        $this->connection->query($sql);
     }
     function upgrade_database($new_version)
     {
@@ -148,6 +156,9 @@ class Connection
         $this->connection->query($sql);
 
         $sql = "ALTER TABLE ".TICKETS_TABLE." RENAME old_".TICKETS_TABLE;
+        $this->connection->query($sql);
+
+        $sql = "ALTER TABLE ".WEEKDAY_TABLE." RENAME old_".WEEKDAY_TABLE;
         $this->connection->query($sql);
 
         //
@@ -169,6 +180,9 @@ class Connection
         $this->connection->query($sql);
 
         $sql = "INSERT ".TICKETS_TABLE." SELECT * FROM old_".TICKETS_TABLE;
+        $this->connection->query($sql);
+
+        $sql = "INSERT ".WEEKDAY_TABLE." SELECT * FROM old_".WEEKDAY_TABLE;
         $this->connection->query($sql);
 
         //
