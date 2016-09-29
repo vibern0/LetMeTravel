@@ -4,15 +4,16 @@ require 'db_conn.php';
 class Transport
 {
     var $db_conn;
+    var $connection;
 
     function __construct()
     {
-        $this->db_conn = new Connection;
-        $this->db_conn->connect();
+        $this->connection = new Connection;
+        $this->db_conn = $this->connection->connect();
     }
     function __destruct()
     {
-        $this->db_conn->disconnect();
+        $this->connection->disconnect();
     }
     function getNumberOfSeats($id_transport)
     {

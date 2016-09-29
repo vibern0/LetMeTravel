@@ -4,7 +4,6 @@ define("STOPS_TABLE", "stops");
 define("STATIONS_TABLE", "stations");
 define("TRANSPORTS_TABLE", "transports");
 define("TICKETS_TABLE", "tickets");
-define("PRICES_TABLE", "prices");
 
 define("MYSQL_HOST",        "localhost");
 define("MYSQL_DATABASE",    "letmetravel");
@@ -114,11 +113,6 @@ class Connection
             '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_transport` INT NOT NULL,'.
             '`id_stop_from` INT NOT NULL, `id_stop_to` INT NOT NULL , `seat` INT NOT NULL, PRIMARY KEY (`id`))';
         $this->connection->query($sql);
-
-        $sql = 'CREATE TABLE IF NOT EXISTS `' . PRICES_TABLE .
-            '` ( `id_station_from` INT NOT NULL, `id_station_to` INT NOT NULL,'.
-            '`price` FLOAT NOT NULL)';
-        $this->connection->query($sql);
         //
     }
     function destroy_old_tables()
@@ -138,9 +132,6 @@ class Connection
 
         $sql = "DROP TABLE old_" . TICKETS_TABLE;
         $this->connection->query($sql);
-
-        $sql = "DROP TABLE old_" . PRICES_TABLE;
-        $this->connection->query($sql);
     }
     function upgrade_database($new_version)
     {
@@ -157,9 +148,6 @@ class Connection
         $this->connection->query($sql);
 
         $sql = "ALTER TABLE ".TICKETS_TABLE." RENAME old_".TICKETS_TABLE;
-        $this->connection->query($sql);
-
-        $sql = "ALTER TABLE ".PRICES_TABLE." RENAME old_".PRICES_TABLE;
         $this->connection->query($sql);
 
         //
@@ -181,9 +169,6 @@ class Connection
         $this->connection->query($sql);
 
         $sql = "INSERT ".TICKETS_TABLE." SELECT * FROM old_".TICKETS_TABLE;
-        $this->connection->query($sql);
-
-        $sql = "INSERT ".PRICES_TABLE." SELECT * FROM old_".PRICES_TABLE;
         $this->connection->query($sql);
 
         //
