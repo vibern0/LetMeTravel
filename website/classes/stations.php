@@ -1,26 +1,44 @@
 <?php
 require 'db_conn.php';
 
-class Station
+class Stations
 {
     var $db_conn;
+    var $connection;
 
     function __construct()
     {
-        $this->db_conn = new Connection;
-        $this->db_conn->connect();
+        $this->connection = new Connection;
+        $this->db_conn = $this->connection->connect();
     }
     function __destruct()
     {
-        $this->db_conn->disconnect();
+        $this->connection->disconnect();
     }
     function getAllStations()
     {
-        //
+        $output = array();
+        $sql = "SELECT * FROM " . STATIONS_TABLE;
+
+        $result = $this->db_conn->query($sql);
+        if (!$result)
+        {
+            echo "Database error during query!\n";
+            echo 'MySQL error: ' . mysql_error();
+            exit;
+        }
+
+        while ($row = $result->fetch_assoc())
+        {
+            $output[$row['id']] = $row['name'];
+        }
+
+        $result->free();
+        return $output;
     }
     function getAvailableDestination($id_from_station)
     {
-        //
+		//
     }
     function getStationsPrintable($array_stations)
     {
