@@ -7,12 +7,19 @@ WHERE t.order >= o.o AND st.id = s.id_station AND s.id = t.id_stop AND t.id = o.
 
 
 
+--get available week days
+SELECT w.week_day FROM stops s, stations st, trajects t, weekday w,
+(SELECT t.order AS o, t.id AS t_id FROM stops s, trajects t, stations st WHERE s.id_station = 2 AND s.id_station = st.id AND t.id_stop = s.id) s1,
+(SELECT t.order AS o, t.id AS t_id FROM stops s, trajects t, stations st WHERE s.id_station = 3 AND s.id_station = st.id AND t.id_stop = s.id) s2
+WHERE s1.t_id = s2.t_id AND t.id = s1.t_id AND s.id_station = 2 AND s.id_station = st.id AND s.id = t.id_stop AND w.id_traject = s1.t_id
+
+
 
 --get available schedule
-SELECT s.hour, s.minute FROM stops s, stations st, trajects t,
+SELECT s.hour, s.minute FROM stops s, stations st, trajects t, weekday w,
 (SELECT t.order AS o, t.id AS t_id FROM stops s, trajects t, stations st WHERE st.name = 'Porto' AND s.id_station = st.id AND t.id_stop = s.id) s1,
 (SELECT t.order AS o, t.id AS t_id FROM stops s, trajects t, stations st WHERE st.name = 'Lisboa' AND s.id_station = st.id AND t.id_stop = s.id) s2
-WHERE s1.t_id = s2.t_id AND t.id = s1.t_id AND st.id = s.id_station AND s.id = t.id_stop AND st.name = 'Porto'
+WHERE s1.t_id = s2.t_id AND t.id = s1.t_id AND st.id = s.id_station AND s.id = t.id_stop AND st.name = 'Porto' AND w.week_day = 5 AND w.id_traject = s1.t_id
 
 
 
