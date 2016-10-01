@@ -27,6 +27,24 @@
                 xmlhttp.open("GET", "scripts/loadDestStations.php?f=" + f.options[f.selectedIndex].value, true);
                 xmlhttp.send();
             }
+            function getAvailableTravelWeekDays()
+            {
+                var t = document.getElementById("toStations");
+                var f = document.getElementById("fromStation");
+                var xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onreadystatechange = function()
+                {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                    {
+                        document.getElementById("weekDay").innerHTML =
+                            /*"<option value='null'>Select</option>" +*/ xmlhttp.responseText;
+                    }
+                };
+                xmlhttp.open("GET", "scripts/getAvailableTravelWeekDays.php?f=" +
+                    f.options[f.selectedIndex].value + "&t=" + t.options[t.selectedIndex].value, true);
+                xmlhttp.send();
+            }
             function getTravelPrice()
             {
                 var t = document.getElementById("toStations");
@@ -49,6 +67,8 @@
                 xmlhttp.open("GET", "scripts/getTravelPrice.php?f=" +
                     f.options[f.selectedIndex].value + "&t=" + t.options[t.selectedIndex].value, true);
                 xmlhttp.send();
+                //
+                getAvailableTravelWeekDays();
             }
             function loadTravelSchedule()
             {
@@ -118,15 +138,15 @@
         </select>
         <span id="travelPrice">0€</span>
         Week day
-        <select id="week_day" onchange="loadTravelSchedule()">
+        <select id="weekDay" onchange="loadTravelSchedule()">
             <option value="null">Select</option>
-            <option value="1">Monday</option>
-            <option value="2">Tuesday</option>
-            <option value="3">Wednesday</option>
-            <option value="4">Thursday</option>
-            <option value="5">Friday</option>
-            <option value="6">Saturday</option>
-            <option value="7">Sunday</option>
+            <!--<option value="1">Sunday</option>
+            <option value="2">Monday</option>
+            <option value="3">Tuesday</option>
+            <option value="4">Wednesday</option>
+            <option value="5">Thursday</option>
+            <option value="6">Friday</option>
+            <option value="7">Saturday</option>-->
         </select>
         Schedule
         <form action="">
