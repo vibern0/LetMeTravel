@@ -1,18 +1,26 @@
 # LetMeTravel
-[![License][license-svg]][license-url]
 
-An website and mobile app where is possible to buy bus tickets.
+#### Description:
+This is a basic system that can be adapted to any travelling campany. The system is built with pre-defined schedules, created by system administrators. The reservation is available by selecting week day, time and seat number.
 
-####How it works
-Any client (registered or not) can buy a bus ticket. It's possible to buy trough web browser or mobile app.
-If the client buy the ticket using the app, the ticket will be shown there. If bought on web site, the ticket will be sent to
-e-mail, in pdf format.
+#### Contents:
+There is a website and and application to this system.
+See different README's.
+* [website README!](http://google.com)
+* [android README!](http://google.com)
 
-####Administrator
-The administrator can administrate the clients, bus lines, control ticket prices and other things.
+#### Installation:
+Depends on your system to run PHP scripts.
+**If using XAMPP**, just copy the *"website"* folder to *"htdocs"* in XAMPP installation folder and rename it to *"LetMeTravel"*. Then run *"localhost/LetMeTravel"*. To add new trajects to the system use *"localhost/LetMeTravel/admin"*. If you want to know more about how this works, see wiki.
 
-####The backend system
-To understand how it works it's just necessary to pay attention. Every station is considered a stop. So, initial and final stations are stops. If the bus stops in a station meanwhile the initial a final station, it's also considered a stop. So, when a client buy a new ticket, the ticket is registered with initial and final stop. Seats area available when there is no tickets on a station.
+#### Usage:
+By using the *"localhost/LetMeTravel/admin"* it's possible to add new trajects, transports, stations and all the things the system has. More at wiki page. For the client it's possible to make a reservation.
 
-[license-svg]: https://img.shields.io/badge/license-GNU%20v.3-blue.svg
-[license-url]: https://github.com/obernardovieira/LetMeTravel
+#### Contributing:
+*Contribution preferences are not available yet! First, basic system should be working. This section will be updated soon.*
+
+#### Credits:
+obernardovieira - Base system.
+
+#### License:
+GNUv3
