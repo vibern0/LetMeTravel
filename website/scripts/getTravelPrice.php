@@ -1,5 +1,5 @@
 <?php
-require '../classes/prices.php';
+require '../prices.php';
 
 $f = $_REQUEST["f"];
 $t = $_REQUEST["t"];
