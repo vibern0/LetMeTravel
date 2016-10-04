@@ -21,7 +21,7 @@ class Connection
 
     function __construct()
     {
-        $this->version = 2;
+        $this->version = 3;
         if(!is_dir(FOLDER_VERSION_URL))
         {
             mkdir(FOLDER_VERSION_URL);
@@ -112,7 +112,8 @@ class Connection
 
         $sql = 'CREATE TABLE IF NOT EXISTS `' . TICKETS_TABLE .
             '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_transport` INT NOT NULL,' .
-            '`id_stop_from` INT NOT NULL, `id_stop_to` INT NOT NULL , `seat` INT NOT NULL, PRIMARY KEY (`id`))';
+            '`id_stop_from` INT NOT NULL, `id_stop_to` INT NOT NULL , '.
+            '`date` DATE NOT NULL , `time` TIME NOT NULL , `seat` INT NOT NULL, PRIMARY KEY (`id`))';
         $this->connection->query($sql);
 
         $sql = 'CREATE TABLE IF NOT EXISTS `' . WEEKDAY_TABLE .
