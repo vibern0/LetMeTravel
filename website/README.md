@@ -1,19 +1,19 @@
 # LetMeTravel (WebSite)
 
-## Description :
+### Description :
 Has said in the main README, this is the code for browser, with also provides an admin interface to moderate all the system and settings.
 
-## Table of contents :
+### Table of contents :
 Everything is explained in wiki. Tables, version manager, database migration and many, many other things.
 
-## Instalation :
+### Instalation :
 (to update)
 
-## Contribuiting :
+### Contribuiting :
 (working on it!)
 
-## Credits :
+### Credits :
 obernardovieira
 
-## License :
+### License :
 GNUv3
