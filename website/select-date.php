@@ -7,16 +7,18 @@
 
     <body>
         <div>
-            From : <select id="from_station" onchange="load_dest_stations()">
-                <option value="null">Select</select>
-            </select>
-            To : <select id="to_stations" onchange="get_available_travel_week_days()">
-                <option value="null">Select</select>
-            </select>
-            Week Day : <select id="week_days" onchange="check_info()">
-                <option value="null">Select</select>
-            </select>
-            <form method="post" action="select-seat.php">
+            <form method="POST" action="select-seat.php">
+
+                From : <select name="from_station" onchange="load_dest_stations()">
+                    <option value="null">Select</option>
+                </select>
+                To : <select name="to_stations" onchange="get_available_travel_week_days()">
+                    <option value="null">Select</option>
+                </select>
+                Week Day : <select name="week_days" onchange="check_info()">
+                    <option value="null">Select</option>
+                </select>
+
                 <input type="submit" id="submit_button" disabled="true" value="Continue">
             </form>
         </div>

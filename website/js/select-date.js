@@ -2,7 +2,7 @@ $(function() { load_all_stations(); });
 
 function load_all_stations()
 {
-    var f = document.getElementById("from_station");
+    var f = document.getElementsByName("from_station")[0];
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function()
     {
@@ -17,8 +17,8 @@ function load_all_stations()
 
 function load_dest_stations()
 {
-    var t = document.getElementById("to_stations");
-    var f = document.getElementById("from_station");
+    var t = document.getElementsByName("to_stations")[0];
+    var f = document.getElementsByName("from_station")[0];
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function()
@@ -33,15 +33,15 @@ function load_dest_stations()
 }
 function get_available_travel_week_days()
 {
-    var t = document.getElementById("to_stations");
-    var f = document.getElementById("from_station");
+    var t = document.getElementsByName("to_stations")[0];
+    var f = document.getElementsByName("from_station")[0];
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function()
     {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
         {
-            document.getElementById("week_days").innerHTML = xmlhttp.responseText;
+            document.getElementsByName("week_days")[0].innerHTML = xmlhttp.responseText;
         }
     };
     xmlhttp.open("GET", "scripts/get-available-travel-week-days.php?f=" +

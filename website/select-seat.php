@@ -7,6 +7,12 @@
 
     <body>
         <div>
+            <span>
+                From : <span id="from_station"></span>
+                <script>get_station_name_by_id(document.getElementById("from_station"), <?php echo $_POST['from_station']; ?>)</script>
+                | To : <span id="to_station"></span>
+                <script>get_station_name_by_id(document.getElementById("to_station"), <?php echo $_POST['to_stations']; ?>)</script>
+            </span>
             Seat : <select>
                 <option value="null">Select</select>
             </select>
