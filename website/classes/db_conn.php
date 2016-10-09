@@ -11,8 +11,9 @@ define("MYSQL_DATABASE",    "letmetravel");
 define("MYSQL_USER",        "root");
 define("MYSQL_PASSWORD",    "root");
 
-define("FILE_VERSION_URL",  ".cache/version");
-define("FOLDER_VERSION_URL",".cache");
+define("MAIN_FOLDER_URL",   "/opt/lampp/htdocs/LetMeTravel/");
+define("FOLDER_VERSION_URL","/opt/lampp/htdocs/LetMeTravel/.cache/");
+define("FILE_VERSION_URL",  "/opt/lampp/htdocs/LetMeTravel/.cache/version");
 
 class Connection
 {
@@ -191,6 +192,7 @@ class Connection
         $this->destroy_old_tables();
 
         //
+        unlink(FILE_VERSION_URL);
 
         $handle = fopen(FILE_VERSION_URL, 'w+');
         ftruncate($handle, 0);

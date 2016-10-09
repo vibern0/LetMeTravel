@@ -60,6 +60,23 @@ class Stations
         $result->free();
         return $output;
     }
+    function getStationNameById($station_id)
+    {
+        $sql = "SELECT * FROM " . STATIONS_TABLE . " WHERE id=" . $station_id;
+
+        $result = $this->db_conn->query($sql);
+        if (!$result)
+        {
+            echo "Database error during query!\n";
+            echo 'MySQL error: ' . mysql_error();
+            exit;
+        }
+
+        $row = $result->fetch_row();
+        $result->free();
+
+        return $row[1];
+    }
     function getStationsPrintable($array_stations)
     {
         $output = '';
