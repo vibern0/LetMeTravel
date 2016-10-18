@@ -1,19 +1,19 @@
 <?php
-define("TRAJECTS_TABLE", "trajects");
-define("STOPS_TABLE", "stops");
-define("STATIONS_TABLE", "stations");
-define("TRANSPORTS_TABLE", "transports");
-define("TICKETS_TABLE", "tickets");
-define("WEEKDAY_TABLE", "weekday");
+define("TRAJECTS_TABLE",    "trajects");
+define("STOPS_TABLE",       "stops");
+define("STATIONS_TABLE",    "stations");
+define("TRANSPORTS_TABLE",  "transports");
+define("TICKETS_TABLE",     "tickets");
+define("WEEKDAY_TABLE",     "weekday");
 
 define("MYSQL_HOST",        "localhost");
 define("MYSQL_DATABASE",    "letmetravel");
 define("MYSQL_USER",        "root");
 define("MYSQL_PASSWORD",    "root");
 
-define("MAIN_FOLDER_URL",   "/opt/lampp/htdocs/LetMeTravel/");
-define("FOLDER_VERSION_URL","/opt/lampp/htdocs/LetMeTravel/.cache/");
-define("FILE_VERSION_URL",  "/opt/lampp/htdocs/LetMeTravel/.cache/version");
+define("MAIN_FOLDER_URL",   "");
+define("FOLDER_VERSION_URL",".cache/");
+define("FILE_VERSION_URL",  ".cache/version");
 
 class Connection
 {
@@ -22,7 +22,7 @@ class Connection
 
     function __construct()
     {
-        $this->version = 3;
+        $this->version = 1;
         if(!is_dir(FOLDER_VERSION_URL))
         {
             mkdir(FOLDER_VERSION_URL);
@@ -99,7 +99,7 @@ class Connection
 
         $sql = 'CREATE TABLE IF NOT EXISTS `'.STOPS_TABLE.
             '` ( `id` INT NOT NULL AUTO_INCREMENT , `id_station` INT NOT NULL '.
-            ', `hour` INT NOT NULL , `minute` INT NOT NULL , PRIMARY KEY (`id`))';
+            ', `time` TIME NOT NULL , PRIMARY KEY (`id`))';
         $this->connection->query($sql);
 
         $sql = 'CREATE TABLE IF NOT EXISTS `'.STATIONS_TABLE.

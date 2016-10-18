@@ -8,7 +8,8 @@ function load_all_stations()
     {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
         {
-            f.innerHTML = xmlhttp.responseText;
+            var data = JSON.parse(xmlhttp.responseText);
+            alert(xmlhttp.responseText);
         }
     };
     xmlhttp.open("GET", "scripts/load-all-stations.php", true);
