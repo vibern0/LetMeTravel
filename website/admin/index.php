@@ -1,32 +1,17 @@
 <html>
     <head>
         <title>[ADMIN] - LetMeTravel</title>
-        <script>
-        function add_station()
-        {
-            alert(document.getElementById("new_station_name").value);
-        }
-        function add_price()
-        {
-            alert("add_price");
-        }
-        function add_new_station()
-        {
-            alert("add_new_station");
-        }
-        function add_traject()
-        {
-            alert("add_traject");
-        }
-        function add_new_transport()
-        {
-            alert("add_new_transport");
-        }
-        </script>
     </head>
 
     <body>
-        <h2>New Station</h2>
+
+        <a href="stations.php">Stations</a><br/>
+        <a href="stops.php">Stops</a><br/>
+        <a href="trajects.php">Trajects</a><br/>
+        <a href="transports.php">Transports</a><br/>
+        <a href="prices.php">Prices</a><br/>
+
+        <!--<h2>New Station</h2>
         Name : <input  type="text" id="new_station_name">
         <button type="button" onclick="add_station()">Register</button>
         <span id="new_station_output"></span>
@@ -65,6 +50,6 @@
         Number : <input  type="text" id="new_transport_number">
         Seats : <input  type="text" id="new_transport_seats">
         <button type="button" onclick="add_new_transport()">Register</button>
-        <span id="new_transport_output"></span>
+        <span id="new_transport_output"></span>-->
     </body>
 <html>
