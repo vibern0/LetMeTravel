@@ -30,7 +30,8 @@ class Stations
 
         while ($row = $result->fetch_row())
         {
-            $output[$row[0]] = $row[1];
+            //$output[$row[0]] = $row[1];
+            array_push($output, array("id" => $row[0], "name" => $row[1]));
         }
 
         $result->free();
@@ -54,8 +55,7 @@ class Stations
 
         while ($row = $result->fetch_row())
         {
-            //$output[$row[0]] = $row[1];
-            array_push($output, array("id" => $row[0], "name" => $row[1]));
+            $output[$row[0]] = $row[1];
         }
 
         $result->free();
