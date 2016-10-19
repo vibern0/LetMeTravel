@@ -9,7 +9,11 @@ function load_all_stations()
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
         {
             var data = JSON.parse(xmlhttp.responseText);
-            alert(xmlhttp.responseText);
+            for(var d = 0; d < data.length; d++)
+            {
+                f.innerHTML += "<option value=" +
+                        data[d].id + ">" + data[d].name + "</option>";
+            }
         }
     };
     xmlhttp.open("GET", "scripts/load-all-stations.php", true);
