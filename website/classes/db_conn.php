@@ -11,9 +11,9 @@ define("MYSQL_DATABASE",    "letmetravel");
 define("MYSQL_USER",        "root");
 define("MYSQL_PASSWORD",    "root");
 
-define("MAIN_FOLDER_URL",   "");
-define("FOLDER_VERSION_URL",".cache/");
-define("FILE_VERSION_URL",  ".cache/version");
+define("MAIN_FOLDER_URL",   "/home/bernardovieira/Dropbox/GitHub/LetMeTravel");
+define("FOLDER_VERSION_URL","/home/bernardovieira/Dropbox/GitHub/LetMeTravel/.cache/");
+define("FILE_VERSION_URL",  "/home/bernardovieira/Dropbox/GitHub/LetMeTravel/.cache/version");
 
 class Connection
 {

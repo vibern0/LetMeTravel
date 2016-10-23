@@ -15,7 +15,10 @@
                 To : <select name="to_stations" onchange="get_available_travel_week_days()">
                     <option value="null">Select</option>
                 </select>
-                Week Day : <select name="week_days" onchange="check_info()">
+                Week Day : <select name="week_days" onchange="get_available_leave_time()">
+                    <option value="null">Select</option>
+                </select>
+                Time : <select name="leave_time" onchange="check_info()">
                     <option value="null">Select</option>
                 </select>
 
