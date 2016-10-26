@@ -12,6 +12,7 @@ See different README's.
 #### Installation:
 Depends on your system to run PHP scripts.
 **If using XAMPP**, just copy the *"website"* folder to *"htdocs"* in XAMPP installation folder and rename it to *"LetMeTravel"*. Then run *"localhost/LetMeTravel"*. To add new trajects to the system use *"localhost/LetMeTravel/admin"*. If you want to know more about how this works, see wiki.
+**If using a virtual machine** with XAMPP (or LAMP or WAMP or any other server) just need to upload the files.
 
 #### Usage:
 By using the *"localhost/LetMeTravel/admin"* it's possible to add new trajects, transports, stations and all the things the system has. More at wiki page. For the client it's possible to make a reservation.
